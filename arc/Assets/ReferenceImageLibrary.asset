@@ -23,7 +23,7 @@ MonoBehaviour:
     m_SerializedTextureGuid:
       m_GuidLow: 8265430157054381956
       m_GuidHigh: 3699095689355135163
-    m_Size: {x: 0.1, y: 0.1}
+    m_Size: {x: 1, y: 1}
     m_SpecifySize: 1
     m_Name: ARC
     m_Texture: {fileID: 0}
