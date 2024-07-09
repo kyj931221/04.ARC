@@ -6,36 +6,40 @@ using UnityEngine.UI;
 public class ToggleManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject Image;
-
-    [SerializeField]
-    private Toggle toggle;
+    private List<Toggle> toggles;
 
     private void Awake()
     {
-        // 토글의 초기 상태를 PlayerPrefs에서 불러와 설정합니다.
-        bool isToggled = PlayerPrefs.GetInt("ToggleState", 0) == 1;
-        toggle.isOn = isToggled;
-        Image.SetActive(isToggled);
+        foreach (var toggle in toggles)
+        {
+            string toggleKey = GetToggleKey(toggle);
+            bool isToggled = PlayerPrefs.GetInt(toggleKey, 0) == 1;
+            toggle.isOn = isToggled;
 
-        toggle.onValueChanged.AddListener(OnToggleValueChanged);
+            toggle.onValueChanged.AddListener((bool isOn) => OnToggleValueChanged(toggle, isOn));
+        }
     }
 
     private void OnDestroy()
     {
-        // 토글의 상태를 저장합니다.
-        PlayerPrefs.SetInt("ToggleState", toggle.isOn ? 1 : 0);
+        foreach (var toggle in toggles)
+        {
+            string toggleKey = GetToggleKey(toggle);
+            PlayerPrefs.SetInt(toggleKey, toggle.isOn ? 1 : 0);
+        }
         PlayerPrefs.Save();
     }
 
-    public void OnToggleValueChanged(bool isOn)
+    private void OnToggleValueChanged(Toggle toggle, bool isOn)
     {
-        // 이미지의 활성화 상태를 토글 상태에 따라 변경합니다.
-        //Image.SetActive(isOn);
-        Debug.Log($"토글 키 {isOn}");
-
-        // 토글 상태를 PlayerPrefs에 저장합니다.
-        PlayerPrefs.SetInt("ToggleState", isOn ? 1 : 0);
+        string toggleKey = GetToggleKey(toggle);
+        PlayerPrefs.SetInt(toggleKey, isOn ? 1 : 0);
         PlayerPrefs.Save();
+        Debug.Log($"토글 {toggleKey} 상태: {isOn}");
+    }
+
+    private string GetToggleKey(Toggle toggle)
+    {
+        return $"ToggleState_{toggle.GetInstanceID()}";
     }
 }
