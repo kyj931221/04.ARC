@@ -7,6 +7,11 @@ using UnityEngine.SceneManagement;
 public class ButtonManager : MonoBehaviour
 {
     public GameObject Modify_screen;
+
+    private void Start()
+    {
+        
+    }
     public void Exit()
     {
         Application.Quit();
@@ -15,11 +20,13 @@ public class ButtonManager : MonoBehaviour
 
     public void active_object()
     {
+        
         Modify_screen.SetActive(true);
     }
 
     public void active_false_object()
     {
+        
         Modify_screen.SetActive(false);
     }
 
